@@ -68,10 +68,23 @@ class AddAndUpdateScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child:
-            (text == 'Save') ? const Icon(Icons.save) : const Icon(Icons.edit),
+        onPressed: () async {
+          (text == 'Save') ? save() : update();
+        },
+        child: (text == 'Save')
+            ? const Icon(Icons.add)
+            : const Icon(
+                Icons.edit,
+              ),
       ),
     );
+  }
+
+  void save() {
+    print('Save');
+  }
+
+  void update() {
+    print('update');
   }
 }
