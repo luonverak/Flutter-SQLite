@@ -33,4 +33,10 @@ class PersonController {
     await db.insert(table, person.fromJson());
     print('success');
   }
+
+  Future<List<Person>> getPersonData() async {
+    final db = await initializeData();
+    List<Map<String, dynamic>> result = await db.query(table);
+    return result.map((e) => Person.toJson(e)).toList();
+  }
 }

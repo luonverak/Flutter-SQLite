@@ -1,17 +1,33 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
+import 'dart:math';
 
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:local_storage/model/person.dart';
+
+import '../controller/controller.dart';
 import '../widget/input_field.dart';
 
-class AddAndUpdateScreen extends StatelessWidget {
-  AddAndUpdateScreen({
+class AddAndUpdateScreen extends StatefulWidget {
+  const AddAndUpdateScreen({
     super.key,
     required this.text,
   });
   final String text;
 
+  @override
+  State<AddAndUpdateScreen> createState() => _AddAndUpdateScreenState();
+}
+
+class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
+  File? _file;
+
   TextEditingController fullname = TextEditingController();
+
   TextEditingController gender = TextEditingController();
+
   TextEditingController age = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,14 +39,18 @@ class AddAndUpdateScreen extends StatelessWidget {
           },
           icon: const Icon(Icons.arrow_back),
         ),
-        title: Text(text),
+        title: Text(widget.text),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () async {
+              openGallery();
+            },
             icon: const Icon(Icons.photo),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () async {
+              openCamera();
+            },
             icon: const Icon(Icons.camera_alt),
           )
         ],
@@ -47,8 +67,16 @@ class AddAndUpdateScreen extends StatelessWidget {
                 width: 200,
                 height: 200,
                 decoration: BoxDecoration(
-                  color: Colors.amber,
+                  color: Colors.blue,
                   borderRadius: BorderRadius.circular(100),
+                  image: (_file != null)
+                      ? DecorationImage(
+                          fit: BoxFit.cover,
+                          image: FileImage(_file!),
+                        )
+                      : const DecorationImage(
+                          image: AssetImage('asset/images/user.png'),
+                        ),
                 ),
               ),
             ],
@@ -69,9 +97,9 @@ class AddAndUpdateScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          (text == 'Save') ? save() : update();
+          (widget.text == 'Save') ? save() : update();
         },
-        child: (text == 'Save')
+        child: (widget.text == 'Save')
             ? const Icon(Icons.add)
             : const Icon(
                 Icons.edit,
@@ -80,11 +108,35 @@ class AddAndUpdateScreen extends StatelessWidget {
     );
   }
 
-  void save() {
-    print('Save');
+  void save() async {
+    await PersonController().insertData(
+      Person(
+          id: Random().nextInt(10000),
+          name: fullname.text,
+          sex: gender.text,
+          age: int.parse(age.text),
+          image: '$_file'),
+    );
   }
 
   void update() {
     print('update');
+  }
+
+  Future openGallery() async {
+    final fileChoose =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    setState(() {
+      _file = File(fileChoose!.path);
+    });
+  }
+
+  Future openCamera() async {
+    final fileChoose =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+
+    setState(() {
+      _file = File(fileChoose!.path);
+    });
   }
 }
