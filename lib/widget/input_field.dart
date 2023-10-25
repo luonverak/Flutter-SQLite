@@ -15,9 +15,10 @@ class InputField extends StatelessWidget {
       child: TextField(
         controller: stringText,
         decoration: InputDecoration(
-          border: OutlineInputBorder(),
+          border: const OutlineInputBorder(),
           hintText: hintText,
         ),
+
       ),
     );
   }

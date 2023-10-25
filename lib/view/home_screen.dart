@@ -17,8 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<List<Person>>? list;
 
   late PersonController db;
-
-  getRefresh() {
+  Future _refresh() async {
     db = PersonController();
     setState(() {
       list = db.getPersonData();
@@ -27,10 +26,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    getRefresh();
+    _refresh();
     super.initState();
   }
 
+  var item;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,17 +64,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     itemCount: snapshot.data!.length,
                     itemBuilder: (context, index) {
                       var per = snapshot.data![index];
+                      item = per;
                       return Card(
                         child: Row(
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: CircleAvatar(
-                                radius: 35,
-                                backgroundImage: FileImage(
-                                  File(per.image),
-                                ),
-                              ),
+                                  radius: 35,
+                                  backgroundImage: FileImage(File(per.image))),
                             ),
                             const SizedBox(
                               width: 10,
@@ -99,19 +97,32 @@ class _HomeScreenState extends State<HomeScreen> {
                             IconButton(
                               onPressed: () {
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const AddAndUpdateScreen(
-                                              text: 'Update'),
-                                    ));
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AddAndUpdateScreen(
+                                      text: 'Update',
+                                      person: per,
+                                    ),
+                                  ),
+                                );
                               },
                               icon: const Icon(
                                 Icons.edit_outlined,
                               ),
                             ),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                await PersonController()
+                                    .deletePersonData(per.id)
+                                    .whenComplete(
+                                      () => _refresh(),
+                                    )
+                                    .then(
+                                      (value) => const AlertDialog(
+                                        title: Text('Delete Success'),
+                                      ),
+                                    );
+                              },
                               icon: const Icon(
                                 Icons.delete,
                               ),
@@ -130,10 +141,13 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const AddAndUpdateScreen(text: 'Save'),
-              ));
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AddAndUpdateScreen(
+                text: 'Save',
+              ),
+            ),
+          );
         },
         child: const Icon(Icons.add),
       ),

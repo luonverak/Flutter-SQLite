@@ -39,4 +39,15 @@ class PersonController {
     List<Map<String, dynamic>> result = await db.query(table);
     return result.map((e) => Person.toJson(e)).toList();
   }
+
+  Future<void> deletePersonData(int id) async {
+    final db = await initializeData();
+    await db.delete(table, where: 'id=?', whereArgs: [id]);
+  }
+
+  Future<void> updatePersonData(Person person) async {
+    final db = await initializeData();
+    await db.update(table, person.fromJson(),
+        where: 'id=?', whereArgs: [person.id]);
+  }
 }

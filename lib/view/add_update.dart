@@ -9,11 +9,9 @@ import '../controller/controller.dart';
 import '../widget/input_field.dart';
 
 class AddAndUpdateScreen extends StatefulWidget {
-  const AddAndUpdateScreen({
-    super.key,
-    required this.text,
-  });
+  const AddAndUpdateScreen({super.key, required this.text, this.person});
   final String text;
+  final Person? person;
 
   @override
   State<AddAndUpdateScreen> createState() => _AddAndUpdateScreenState();
@@ -23,7 +21,6 @@ class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
   File? _file;
 
   TextEditingController fullname = TextEditingController();
-
   TextEditingController gender = TextEditingController();
 
   TextEditingController age = TextEditingController();
@@ -111,16 +108,23 @@ class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
   void save() async {
     await PersonController().insertData(
       Person(
-          id: Random().nextInt(10000),
-          name: fullname.text,
-          sex: gender.text,
-          age: int.parse(age.text),
-          image: '$_file'),
+        id: Random().nextInt(10000),
+        name: fullname.text,
+        sex: gender.text,
+        age: int.parse(age.text),
+        image: _file!.path,
+      ),
     );
   }
 
-  void update() {
-    print('update');
+  void update() async {
+    await PersonController().updatePersonData(Person(
+      id: widget.person!.id,
+      name: fullname.text,
+      sex: gender.text,
+      age: int.parse(age.text),
+      image: _file == null ? widget.person!.image : _file!.path,
+    ));
   }
 
   Future openGallery() async {
@@ -134,7 +138,6 @@ class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
   Future openCamera() async {
     final fileChoose =
         await ImagePicker().pickImage(source: ImageSource.camera);
-
     setState(() {
       _file = File(fileChoose!.path);
     });
