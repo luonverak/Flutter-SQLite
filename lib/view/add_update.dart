@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:local_storage/model/person.dart';
+import 'package:local_storage/view/home_screen.dart';
 
 import '../controller/controller.dart';
 import '../widget/input_field.dart';
@@ -106,25 +107,31 @@ class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
   }
 
   void save() async {
-    await PersonController().insertData(
-      Person(
-        id: Random().nextInt(10000),
-        name: fullname.text,
-        sex: gender.text,
-        age: int.parse(age.text),
-        image: _file!.path,
-      ),
-    );
+    await PersonController()
+        .insertData(
+          Person(
+            id: Random().nextInt(10000),
+            name: fullname.text,
+            sex: gender.text,
+            age: int.parse(age.text),
+            image: _file!.path,
+          ),
+        )
+        .whenComplete(() => Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const HomeScreen())));
   }
 
   void update() async {
-    await PersonController().updatePersonData(Person(
-      id: widget.person!.id,
-      name: fullname.text,
-      sex: gender.text,
-      age: int.parse(age.text),
-      image: _file == null ? widget.person!.image : _file!.path,
-    ));
+    await PersonController()
+        .updatePersonData(Person(
+          id: widget.person!.id,
+          name: fullname.text,
+          sex: gender.text,
+          age: int.parse(age.text),
+          image: _file == null ? widget.person!.image : _file!.path,
+        ))
+        .whenComplete(() => Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const HomeScreen())));
   }
 
   Future openGallery() async {

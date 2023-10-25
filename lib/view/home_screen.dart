@@ -34,13 +34,21 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('SQLite Flutter'),
-      ),
-      body: ListView(
+      body: Column(
         children: [
-          const SizedBox(
-            height: 20,
+          Container(
+            width: double.infinity,
+            height: 150,
+            color: Colors.blue,
+            child: const Center(
+                child: Text(
+              'SQL Flutter',
+              style: TextStyle(
+                fontSize: 25,
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+            )),
           ),
           SizedBox(
             height: 600,
@@ -71,8 +79,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: CircleAvatar(
-                                  radius: 35,
-                                  backgroundImage: FileImage(File(per.image))),
+                                radius: 35,
+                                backgroundImage: FileImage(
+                                  File(per.image),
+                                ),
+                              ),
                             ),
                             const SizedBox(
                               width: 10,
@@ -135,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
               },
             ),
-          )
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
