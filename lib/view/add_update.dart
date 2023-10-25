@@ -65,7 +65,6 @@ class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
                 width: 200,
                 height: 200,
                 decoration: BoxDecoration(
-                  color: Colors.blue,
                   borderRadius: BorderRadius.circular(100),
                   image: (_file != null)
                       ? DecorationImage(
@@ -120,7 +119,7 @@ class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
         .whenComplete(() => Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-              builder: (context) => HomeScreen(),
+              builder: (context) => const HomeScreen(),
             ),
             (route) => false));
   }
@@ -137,7 +136,7 @@ class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
         .whenComplete(() => Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-              builder: (context) => HomeScreen(),
+              builder: (context) => const HomeScreen(),
             ),
             (route) => false));
   }
