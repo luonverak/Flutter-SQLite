@@ -117,8 +117,12 @@ class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
             image: _file!.path,
           ),
         )
-        .whenComplete(() => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const HomeScreen())));
+        .whenComplete(() => Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeScreen(),
+            ),
+            (route) => false));
   }
 
   void update() async {
@@ -130,8 +134,12 @@ class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
           age: int.parse(age.text),
           image: _file == null ? widget.person!.image : _file!.path,
         ))
-        .whenComplete(() => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const HomeScreen())));
+        .whenComplete(() => Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeScreen(),
+            ),
+            (route) => false));
   }
 
   Future openGallery() async {

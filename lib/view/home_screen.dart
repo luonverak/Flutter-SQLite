@@ -17,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<List<Person>>? list;
 
   late PersonController db;
-  Future _refresh() async {
+  Future refresh() async {
     db = PersonController();
     setState(() {
       list = db.getPersonData();
@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    _refresh();
+    refresh();
     super.initState();
   }
 
@@ -34,24 +34,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('SQL Flutter'),
+      ),
       body: Column(
         children: [
-          Container(
-            width: double.infinity,
-            height: 150,
-            color: Colors.blue,
-            child: const Center(
-                child: Text(
-              'SQL Flutter',
-              style: TextStyle(
-                fontSize: 25,
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-              ),
-            )),
-          ),
           SizedBox(
-            height: 600,
+            height: 700,
             width: double.infinity,
             child: FutureBuilder<List<Person>>(
               future: list,
@@ -126,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 await PersonController()
                                     .deletePersonData(per.id)
                                     .whenComplete(
-                                      () => _refresh(),
+                                      () => refresh(),
                                     )
                                     .then(
                                       (value) => const AlertDialog(
