@@ -70,8 +70,11 @@ class _HomeScreenState extends State<HomeScreen> {
                             Padding(
                               padding: const EdgeInsets.all(5.0),
                               child: CircleAvatar(
-                                  radius: 35,
-                                  backgroundImage: FileImage(File(per.image))),
+                                radius: 35,
+                                backgroundImage: FileImage(
+                                  File(per.image),
+                                ),
+                              ),
                             ),
                             const SizedBox(
                               width: 10,
