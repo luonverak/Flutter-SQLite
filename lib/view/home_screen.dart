@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 
 import '../controller/controller.dart';
 import '../model/person.dart';
-import 'add_update.dart';
+import 'add_screen.dart';
+import 'update_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -66,14 +67,20 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Row(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: CircleAvatar(
-                                radius: 35,
-                                backgroundImage: FileImage(
-                                  File(per.image),
-                                ),
-                              ),
-                            ),
+                                padding: const EdgeInsets.all(5.0),
+                                child: Container(
+                                  width: 50,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(50),
+                                    color: Colors.blue,
+                                    image: DecorationImage(
+                                      image: FileImage(
+                                        File(per.image),
+                                      ),
+                                    ),
+                                  ),
+                                )),
                             const SizedBox(
                               width: 10,
                             ),
@@ -99,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => AddAndUpdateScreen(
+                                    builder: (context) => UpdateScreen(
                                       text: 'Update',
                                       person: per,
                                     ),
@@ -143,7 +150,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const AddAndUpdateScreen(
+              builder: (context) => const AddScreen(
                 text: 'Save',
               ),
             ),

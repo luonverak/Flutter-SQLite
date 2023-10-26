@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,25 +8,33 @@ import 'package:local_storage/view/home_screen.dart';
 import '../controller/controller.dart';
 import '../widget/input_field.dart';
 
-class AddAndUpdateScreen extends StatefulWidget {
-  const AddAndUpdateScreen({super.key, required this.text, this.person});
+class UpdateScreen extends StatefulWidget {
+  const UpdateScreen({super.key, required this.text, required this.person});
   final String text;
-  final Person? person;
+  final Person person;
 
   @override
-  State<AddAndUpdateScreen> createState() => _AddAndUpdateScreenState();
+  State<UpdateScreen> createState() => _UpdateScreenState();
 }
 
-class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
+class _UpdateScreenState extends State<UpdateScreen> {
   File? _file;
 
   TextEditingController fullname = TextEditingController();
   TextEditingController gender = TextEditingController();
 
   TextEditingController age = TextEditingController();
+  @override
+  void initState() {
+    fullname.text = widget.person.name;
+    gender.text = widget.person.sex;
+    age.text = '${widget.person.age}';
+    _file = File(widget.person.image);
+    super.initState();
+  }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext conteext) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -94,7 +101,7 @@ class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          (widget.text == 'Save') ? save() : update();
+          update();
         },
         child: (widget.text == 'Save')
             ? const Icon(Icons.add)
@@ -103,25 +110,6 @@ class _AddAndUpdateScreenState extends State<AddAndUpdateScreen> {
               ),
       ),
     );
-  }
-
-  void save() async {
-    await PersonController()
-        .insertData(
-          Person(
-            id: Random().nextInt(10000),
-            name: fullname.text,
-            sex: gender.text,
-            age: int.parse(age.text),
-            image: _file!.path,
-          ),
-        )
-        .whenComplete(() => Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const HomeScreen(),
-            ),
-            (route) => false));
   }
 
   void update() async {

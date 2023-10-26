@@ -50,4 +50,5 @@ class PersonController {
     await db.update(table, person.fromJson(),
         where: 'id=?', whereArgs: [person.id]);
   }
+  
 }
