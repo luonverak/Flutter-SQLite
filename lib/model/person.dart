@@ -3,7 +3,7 @@ class Person {
   final String name;
   final String sex;
   final int age;
-  final String image;
+  late String image;
 
   Person(
       {required this.id,

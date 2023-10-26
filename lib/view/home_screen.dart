@@ -67,20 +67,22 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Row(
                           children: [
                             Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Container(
-                                  width: 50,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(50),
-                                    color: Colors.blue,
-                                    image: DecorationImage(
-                                      image: FileImage(
-                                        File(per.image),
-                                      ),
+                              padding: const EdgeInsets.all(5.0),
+                              child: Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50),
+                                  color: Colors.blue,
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: FileImage(
+                                      File(per.image),
                                     ),
                                   ),
-                                )),
+                                ),
+                              ),
+                            ),
                             const SizedBox(
                               width: 10,
                             ),
