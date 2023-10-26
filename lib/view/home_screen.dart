@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 
 import '../controller/controller.dart';
@@ -121,16 +122,21 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             IconButton(
                               onPressed: () async {
-                                await PersonController()
-                                    .deletePersonData(per.id)
-                                    .whenComplete(
-                                      () => refresh(),
-                                    )
-                                    .then(
-                                      (value) => const AlertDialog(
-                                        title: Text('Delete Success'),
-                                      ),
-                                    );
+                                AwesomeDialog(
+                                  context: context,
+                                  dialogType: DialogType.info,
+                                  animType: AnimType.rightSlide,
+                                  title: 'Delete',
+                                  desc: 'Are you sur for delete?',
+                                  btnCancelOnPress: () {},
+                                  btnOkOnPress: () async {
+                                    await PersonController()
+                                        .deletePersonData(per.id)
+                                        .whenComplete(
+                                          () => refresh(),
+                                        );
+                                  },
+                                ).show();
                               },
                               icon: const Icon(
                                 Icons.delete,
